@@ -18,10 +18,9 @@ namespace WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Product> list= _productService.GetList();
-            return View(list);
+            return View(await _productService.GetList());
         }
     }
 }

@@ -3,15 +3,16 @@ using Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
     public interface IProductService
     {
-        public void Add(Product product);
-        public void Delete(Product product);
-        public void Update(Product product);
-        public Product GetById(int productId);
-        public List<Product> GetList();
+        public Task Add(Product product);
+        public Task Delete(Product product);
+        public Task Update(Product product);
+        public Task<Product> GetById(int productId);
+        public Task<IEnumerable<Product>> GetList();
     }
 }

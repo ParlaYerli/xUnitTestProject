@@ -28,6 +28,7 @@ namespace WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped(typeof(IRepository<>),typeof(RepositoryBase<,>));
             services.AddTransient<IProductDal, ProductDal>();
             services.AddTransient<IProductService, ProductService>();
             services.AddDbContext<AppContextDB>();

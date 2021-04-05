@@ -4,6 +4,7 @@ using Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -16,25 +17,25 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        public void Add(Product product)
+        public async Task Add(Product product)
         {
-            _productDal.AddProduct(product);
+            await _productDal.Create(product);
         }
-        public void Delete(Product product)
+        public async Task Delete(Product product)
         {
-            _productDal.Delete(product);
+            await _productDal.Delete(product);
         }
-        public Product GetById(int productId)
+        public async Task<Product> GetById(int productId)
         {
-            return _productDal.GetById(productId);
+            return await _productDal.GetById(productId);
         }
-        public List<Product> GetList()
+        public async Task<IEnumerable<Product>> GetList()
         {
-            return _productDal.GetListProduct();
+            return await _productDal.GetAll();
         }
-        public void Update(Product product)
+        public async Task Update(Product product)
         {
-            _productDal.Update(product);
+            await _productDal.Update(product);
         }
     }
 }

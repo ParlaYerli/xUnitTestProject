@@ -23,14 +23,14 @@ namespace DataAccess.Concrete.Context
 
         private static Product[] Products =
         {
-            new Product(){ Name="kalem",    Price=20,   Stock=11},
-            new Product(){ Name="silgi",    Price=25,   Stock=11},
-            new Product(){ Name="masa",     Price=30,   Stock=11},
-            new Product(){ Name="bardak",   Price=45,   Stock=11},
-            new Product(){ Name="sandalye", Price=78,   Stock=11},
-            new Product(){ Name="laptop",   Price=2532, Stock=11},
-            new Product(){ Name="defter",   Price=7,    Stock=11},
-            new Product(){ Name="kitap",    Price=35,   Stock=11},
+            new Product(){ Name="kalem",   Price=20,   Stock=11},
+            new Product(){ Name="silgi",   Price=25,   Stock=11},
+            new Product(){ Name="masa",    Price=30,   Stock=11},
+            new Product(){ Name="bardak",  Price=45,   Stock=11},
+            new Product(){ Name="sandalye",Price=78,   Stock=11},
+            new Product(){ Name="laptop",  Price=2532, Stock=11},
+            new Product(){ Name="defter",  Price=7,    Stock=11},
+            new Product(){ Name="kitap",   Price=35,   Stock=11},
         };
     }
 }

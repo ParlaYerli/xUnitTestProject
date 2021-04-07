@@ -70,6 +70,6 @@ namespace xUnitTest.Test
             var viewResult = Assert.IsType<ViewResult>(result);
             var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
             Assert.Equal(product.Id,resultProduct.Id);
-        }
+        }   
     }
 }

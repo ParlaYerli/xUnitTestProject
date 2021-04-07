@@ -43,5 +43,33 @@ namespace xUnitTest.Test
             var productList = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult.Model);
             Assert.Equal<int>(2, productList.Count());
         }
+
+        [Fact]
+        public async void Details_IdNull_ReturnRedirectToIndexAction()
+        {
+            var result = await _controller.Details(null);
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        [Fact]
+        public async void Details_IdInValid_ReturnNotFound()
+        {
+            Product product = null;
+            _mockService.Setup(x => x.GetById(0)).ReturnsAsync(product);
+            var result = await _controller.Details(0);
+            var redirect = Assert.IsType<NotFoundResult>(result);
+            Assert.Equal<int>(404,redirect.StatusCode);
+        }
+        [Theory]
+        [InlineData(1)]
+        public async void Details_IdValid_ReturnProduct(int productId)
+        {
+            Product product = list.First(x => x.Id == productId);
+            _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+            var result = await _controller.Details(productId);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
+            Assert.Equal(product.Id,resultProduct.Id);
+        }
     }
 }

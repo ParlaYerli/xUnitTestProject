@@ -108,5 +108,67 @@ namespace xUnitTest.Test
             var result = await _controller.Create(list.First());
             _mockService.Verify(x => x.Add(It.IsAny<Product>()), Times.Never);
         }
+        [Fact]
+        public async void EditGET_IdIsNull_ReturnRedirectToIndexAction()
+        {
+            var result = await _controller.Edit(null);
+            var redirect = Assert.IsAssignableFrom<RedirectToActionResult>(result);
+            Assert.Equal("Index",redirect.ActionName);
+        }
+        [Theory]
+        [InlineData(3)]
+        public async void EditGET_IdInValid_ReturnNotFound(int productId)
+        {
+            Product product = null;
+            _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+            var result = await _controller.Edit(productId);
+            var redirect = Assert.IsType<NotFoundResult>(result);
+            Assert.Equal<int>(404, redirect.StatusCode);
+            _mockService.Verify(x=>x.GetById(It.IsAny<int>()),Times.Once);
+        }
+        [Theory]
+        [InlineData(2)]
+        public async void EditGET_ActionExecutes_ReturnProduct(int productId)
+        {
+            var product = list.First(x => x.Id == productId);
+            _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+            var result = await _controller.Edit(productId);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
+            Assert.Equal<int>(product.Id,resultProduct.Id);
+        }
+        [Theory]
+        [InlineData(1)]
+        public async void EditPOST_IdIsNotEqualProduct_ReturnNotFound(int productId)
+        {
+            var result = await _controller.Edit(2,list.First(x => x.Id == productId));
+            Assert.IsType<NotFoundResult>(result);
+        }
+        [Theory]
+        [InlineData(1)]
+        public async void EditPOST_ModalStateInValid_ReturnView(int productId)
+        {
+            _controller.ModelState.AddModelError("Name", "");
+            var result = await _controller.Edit(productId, list.First(x => x.Id == productId));
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.IsType<Product>(viewResult.Model);
+        }
+        [Theory]
+        [InlineData(1)]
+        public async void EditPOST_ValidModel_ReturnRedirectToAction(int productId)
+        {
+            var result = await _controller.Edit(productId,list.First(x=>x.Id==productId));
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        [Theory]
+        [InlineData(1)]
+        public async void EditPOST_ValidModel_UpdateMethodExecute(int productId)
+        {
+            var product = list.First(x => x.Id == productId);
+            _mockService.Setup(x => x.Update(product));
+            await _controller.Edit(productId, product);
+            _mockService.Verify(x => x.Update(It.IsAny<Product>()), Times.Once);
+        }
     }
 }
